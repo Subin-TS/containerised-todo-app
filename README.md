@@ -2,128 +2,65 @@
 
 ## Overview
 
-This project is a Full Stack To-Do Application built using:
+This project demonstrates a production-style containerized full-stack To-Do application built using Flask, MySQL, Nginx, Docker, GitHub Actions, Prometheus, and Grafana.
+
+The project showcases modern DevOps practices such as containerization, CI/CD automation, Docker Hub integration, monitoring, logging, and deployment.
+
+---
+
+## Technology Stack
 
 * Python Flask
-* MySQL Database
-* Docker & Docker Compose
-* Nginx Reverse Proxy
-* GitHub Actions CI/CD
+* MySQL
+* Nginx
+* Docker
+* Docker Compose
+* GitHub Actions
 * Docker Hub
-
-The application allows users to create and view tasks through REST APIs.
+* Prometheus
+* Grafana
 
 ---
 
 ## Architecture
 
-```text
-Internet
-   │
-   ▼
- Nginx
-   │
-   ▼
-Flask App
-   │
-   ▼
- MySQL
+Internet → Nginx → Flask → MySQL
 
-Docker Compose
-├── nginx
-├── flask-app
-└── mysql
+Monitoring:
 
-CI/CD
+Prometheus → Grafana
+
+CI/CD:
+
 GitHub Actions → Docker Hub
-```
-
----
-
-## Project Structure
-
-```text
-containerised-todo-stack
-│
-├── app
-│   ├── app.py
-│   └── requirements.txt
-│
-├── nginx
-│   └── default.conf
-│
-├── mysql-init
-│   └── init.sql
-│
-├── tests
-│   └── test_app.py
-│
-├── Dockerfile
-├── docker-compose.yml
-├── .env
-└── README.md
-```
 
 ---
 
 ## Features
 
-* Create To-Do Tasks
-* View To-Do Tasks
-* MySQL Database Integration
-* Dockerized Application
-* Nginx Reverse Proxy
-* Docker Compose Deployment
-* CI/CD with GitHub Actions
-* Docker Hub Integration
-* Health Checks
-* Logging & Monitoring
-* Security Scanning with Trivy
+* Create Tasks
+* View Tasks
+* Health Check API
+* Dockerized Deployment
+* Multi-Container Architecture
+* CI/CD Automation
+* Docker Hub Publishing
+* Prometheus Monitoring
+* Grafana Dashboards
+* Logging
+* Security Scanning
 
 ---
 
-## Prerequisites
+## Start Application
 
-* Docker
-* Docker Compose
-* Git
-* GitHub Account
-* Docker Hub Account
-
----
-
-## Setup
-
-### Clone Repository
+Build and start containers:
 
 ```bash
-git clone https://github.com/<Subin-TS>/containerised-todo-app.git
-cd containerised-todo-stack
+docker compose up -d --build
 ```
 
-### Create Environment File
-
-Create `.env`
-
-```env
-DB_HOST=mysql
-DB_NAME=todo_db
-DB_USER=todo_user
-DB_PASSWORD=St***********
-MYSQL_ROOT_PASSWORD=Root*********
-```
-
----
-
-## Deploy Application
-
-Start all containers:
-
-```bash
-docker compose up -d
-```
-
-Check status:
+Verify:
 
 ```bash
 docker compose ps
@@ -131,152 +68,50 @@ docker compose ps
 
 ---
 
-## API Testing
+## Application URLs
 
-### Home Page
+Application:
 
-```bash
-curl http://localhost
-```
+http://localhost
 
-Response:
+Health Check:
 
-```json
-{
-  "message":"Todo App Running"
-}
-```
+http://localhost/health
 
-### Create Task
+Prometheus:
 
-```bash
-curl -X POST \
--H "Content-Type: application/json" \
--d '{"task":"Learn production level deploy"}' \
-http://localhost/todo
-```
+http://localhost:9090
 
-### View Tasks
+Grafana:
 
-```bash
-curl http://localhost/todo
-```
-
-### Health Check
-
-```bash
-curl http://localhost/health
-```
-
----
-
-## Docker Commands
-
-Build Image:
-
-```bash
-docker build -t todo-app:v1 .
-```
-
-Run Container:
-
-```bash
-docker run -d -p 5000:5000 --name todo-app todo-app:v1
-```
-
----
-
-## Unit Testing
-
-Run tests:
-
-```bash
-pytest
-```
+http://localhost:3000
 
 ---
 
 ## CI/CD Pipeline
 
-GitHub Actions performs:
+GitHub Actions automatically:
 
-* Code Checkout
-* Dependency Installation
-* Unit Testing
-* Docker Image Build
-* Docker Hub Push
-
-Required GitHub Secrets:
-
-```text
-DOCKER_USERNAME
-DOCKER_PASSWORD
-```
+1. Checks out code
+2. Installs dependencies
+3. Runs tests
+4. Builds Docker image
+5. Pushes image to Docker Hub
 
 ---
 
-## Docker Hub
+## Docker Hub Repository
 
-Login:
-
-```bash
-docker login
-```
-
-Push Image:
-
-```bash
-docker push <dockerhub-username>/todo-app:v1.0
-```
-
-Pull Image:
-
-```bash
-docker pull <dockerhub-username>/todo-app:v1.0
-```
-
----
-
-## Security
-
-Image Scan:
-
-```bash
-trivy image todo-app:v1
-```
-
-Dependency Scan:
-
-```bash
-safety scan
-```
-
-Verify Non-Root User:
-
-```bash
-docker exec todo-app whoami
-```
-
-Expected Output:
-
-```text
-appuser
-```
+subin1987/containerised-todo-app
 
 ---
 
 ## Monitoring
 
-Monitoring can be integrated using:
+Prometheus collects metrics from the application.
 
-* Prometheus
-* Grafana
-
-Grafana URL:
-
-```text
-http://server-ip:3000
-```
+Grafana visualizes application metrics through dashboards.
 
 ---
+
 
