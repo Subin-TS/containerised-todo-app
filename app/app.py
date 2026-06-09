@@ -1,15 +1,21 @@
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
+from prometheus_flask_exporter import PrometheusMetrics
 import os
 import logging
 
 app = Flask(__name__)
 
+# Prometheus Metrics
+metrics = PrometheusMetrics(app)
+
+# Logging
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s %(levelname)s %(message)s'
 )
 
+# Database Configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = (
     f"mysql+pymysql://{os.getenv('DB_USER')}:"
     f"{os.getenv('DB_PASSWORD')}@"
@@ -22,17 +28,20 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 
+# Database Model
 class Todo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     task = db.Column(db.String(200), nullable=False)
 
 
+# Home Endpoint
 @app.route("/")
 def home():
     logging.info("Home page accessed")
     return jsonify({"message": "Todo App Running"})
 
 
+# Create Task
 @app.route("/todo", methods=["POST"])
 def add_task():
 
@@ -53,6 +62,7 @@ def add_task():
     return jsonify({"status": "created"}), 201
 
 
+# Get All Tasks
 @app.route("/todo", methods=["GET"])
 def get_tasks():
 
@@ -71,6 +81,7 @@ def get_tasks():
     return jsonify(result)
 
 
+# Health Check
 @app.route("/health")
 def health():
 
@@ -79,9 +90,6 @@ def health():
     return jsonify({"status": "healthy"})
 
 
-with app.app_context():
-    db.create_all()
-
-
+# Application Start
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)

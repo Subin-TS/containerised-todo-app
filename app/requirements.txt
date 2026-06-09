@@ -4,3 +4,4 @@ PyMySQL
 gunicorn
 python-dotenv
 pytest
+prometheus-flask-exporter

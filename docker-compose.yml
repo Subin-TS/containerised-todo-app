@@ -1,4 +1,3 @@
-
 services:
 
   mysql:
@@ -54,12 +53,17 @@ services:
 
     networks:
       - todo-network
+
   prometheus:
     image: prom/prometheus
+
     container_name: prometheus
 
     ports:
       - "9090:9090"
+
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
 
     networks:
       - todo-network
@@ -74,6 +78,7 @@ services:
 
     networks:
       - todo-network
+
 volumes:
 
   mysql_data:
