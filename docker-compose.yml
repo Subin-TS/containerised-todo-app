@@ -54,7 +54,26 @@ services:
 
     networks:
       - todo-network
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
 
+    ports:
+      - "9090:9090"
+
+    networks:
+      - todo-network
+
+  grafana:
+    image: grafana/grafana
+
+    container_name: grafana
+
+    ports:
+      - "3000:3000"
+
+    networks:
+      - todo-network
 volumes:
 
   mysql_data:
